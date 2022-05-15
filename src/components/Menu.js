@@ -1,0 +1,39 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import MyButton from "./Button";
+import bmce_capital from "../assets/bmce_capital.png";
+import ifa from "../assets/ifa.png";
+import Noo from "../assets/bmce_capital.png";
+import "./styles/menu.css";
+export default function Menu() {
+  let navigate = useNavigate();
+  return (
+    <div className="menu">
+      <div className="imgs">
+        <img src={bmce_capital} alt="" />
+        <img src={ifa} alt="" />
+        <img src={Noo} alt="" />
+      </div>
+      <MyButton name="Strategie" />
+      <MyButton name="Constructeur de portefeuille" />
+      <MyButton
+        name="Info"
+        onClick={() => {
+          navigate("/info");
+        }}
+      />
+      <MyButton
+        onClick={() => {
+          navigate("/indicateurDeLiquidte");
+        }}
+        name="Indicateur de liquidite"
+      />
+      <MyButton
+        onClick={() => {
+          navigate("/indices");
+        }}
+        name="Indices"
+      />
+    </div>
+  );
+}

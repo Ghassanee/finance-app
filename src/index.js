@@ -1,13 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Info from "./components/Info";
+import Indices from "./components/Indices";
+import IndicateurDeLiquidte from "./components/IndicateurDeLiquidte";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="info" element={<Info />} />
+        <Route path="indices" element={<Indices />} />
+        <Route path="indicateurDeLiquidte" element={<IndicateurDeLiquidte />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
