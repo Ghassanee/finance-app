@@ -2,7 +2,7 @@ import axios from "axios";
 const API = "http://127.0.0.1:5000";
 export function getInfo(actif, option) {
   return axios
-    .get(`${API}/info?actif=BOA&&&option=Seance_prec`)
+    .get(`${API}/info?actif=${actif}&option=${option}`)
     .then(function (response) {
       return response.data;
     })
@@ -29,15 +29,9 @@ export function getIndicatorDeLiquidity(
   date_deb,
   date_fin
 ) {
-  console.log(date_deb);
-  console.log(date_fin);
   return axios
     .get(
-      `${API}/indicator_de_liquidity?actif_name=${actif_name}&
-    option=${option}&
-    pt=${pt}&
-    date_deb=${date_deb}&
-    date_fin=${date_fin}`
+      `${API}/indicator_de_liquidity?actif_name=${actif_name}&option=${option}&pt=${pt}&date_deb=${date_deb}&date_fin=${date_fin}`
     )
     .then(function (response) {
       return response.data;

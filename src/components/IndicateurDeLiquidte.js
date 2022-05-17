@@ -23,7 +23,9 @@ export default function IndicateurDeLiquidte() {
   const [price, setprice] = React.useState("0");
   const [actif, setactif] = React.useState("");
   const [indiquateur, setindiquateur] = React.useState("");
+  const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
+  const [dateFinVal, setdateFinVal] = useState("2022-05-17");
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
   const handleChange = (event) => {
@@ -31,9 +33,21 @@ export default function IndicateurDeLiquidte() {
   };
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
+    setdateDebutVal(
+      `${newValue.getFullYear()}-${String(newValue.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(newValue.getDate() + 1).padStart(2, "0")}`
+    );
   };
   const handleChangedateFin = (newValue) => {
     setdateFin(newValue);
+    setdateFinVal(
+      `${newValue.getFullYear()}-${String(newValue.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(newValue.getDate() + 1).padStart(2, "0")}`
+    );
   };
   return (
     <div className="info">
@@ -83,8 +97,8 @@ export default function IndicateurDeLiquidte() {
             actif,
             indiquateur,
             price,
-            dateDebut,
-            dateFin
+            dateDebutVal,
+            dateFinVal
           ).then((res) => {
             setdata(res);
           });

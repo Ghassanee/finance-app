@@ -6,17 +6,20 @@ import Combox from "./cmp/Combox";
 import Dataframe from "./cmp/Dataframe";
 import "./styles/info.css";
 const listButtonText = [
-  "Meilleure limite",
-  "Donnees seance",
-  "Donnee seance precedente",
-  "Derniere transaction",
-  "Info societe",
-  "Plus forte hausse",
-  "Plus forte baisse",
-  "Actionnaire",
+  "Intraday",
+  "Meilleur_limit",
+  "Données_Seance",
+  "Donnee_seance_precedente",
+  "Dernieres_Tansaction",
+  "Info_Societe",
+  "Plus_forte hausse",
+  "Plus_forte baisse",
+  "Actionnaires",
   "Ratio",
-  "Dir",
+  "Chiffres_cles",
+  "Seance_prec",
 ];
+
 export default function Info() {
   const [data, setdata] = useState(null);
   const [actif, setactif] = useState("");

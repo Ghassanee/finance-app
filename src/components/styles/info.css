@@ -1,9 +1,7 @@
 .info {
   position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
   min-width: 300px;
+  margin: 20px;
 }
 .textSelect {
   margin: 20px;

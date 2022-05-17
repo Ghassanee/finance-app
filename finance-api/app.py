@@ -227,15 +227,14 @@ def get_info(actif_name, option):
         return pd.DataFrame(cours[option])
 
     elif option in ['Info_Societe', 'Actionnaires', 'Chiffres_cles', 'Ratio']:
-        indicateur = load.getKeyIndicators(actif)
+        indicateur = load.getKeyIndicators(actif_name)
+	    # indicateur.keys()
+        return pd.DataFrame(indicateur[option])
+    elif option == "Intraday":
+        return dd.get_intraday()
 
-        return pd.DataFrame(cours[option])
-    # elif option == Intraday:
-    #     data = dd.get_intraday()
-    #     return dd.get_intraday()
 
-
-def get_indice( option):
+def get_indice(option):
 
     if option in ['Resume indice', 'Indice rentabilite', 'Indices en devises', 'Indice FTSE', ]:
         index = load.getIndex()
@@ -248,8 +247,8 @@ def get_indice( option):
         recap.keys()
         recap[option]
         return pd.DataFrame(recap[option])
-    # elif option == poids:
-    #     return pd.DataFrame(load.getPond())
+    elif option == "poids":
+        return pd.DataFrame(load.getPond())
 
 
 def get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin):
@@ -278,10 +277,11 @@ app = Flask(__name__)
 CORS(app)
 
 cors = CORS(app, resource={
-    r"/*":{
-        "origins":"*"
+    r"/*": {
+        "origins": "*"
     }
 })
+
 
 @app.route("/")
 def hello_world():
@@ -296,13 +296,15 @@ def info():
     # df_list_keys = get_info(actif, option).keys()
     # JSONP_data = jsonpify(df_list)
     # jsonKeys = jsonpify(df_list_keys)
-    return  get_info(actif, option).to_json()
+    return get_info(actif, option).to_json()
 
 
 @app.route('/indice')
 def indice():
     indice = request.args.get('indice')
-    return get_indice( indice)
+    print(indice)
+
+    return get_indice(indice).to_json()
 
 
 @app.route('/indicator_de_liquidity', methods=['POST', 'GET'])
@@ -312,4 +314,5 @@ def indicator_de_liquidity():
     pt = request.args.get('pt')
     date_deb = request.args.get('date_deb')
     date_fin = request.args.get('date_fin')
-    return get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin)
+    print(date_deb)
+    return get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin).to_json()
