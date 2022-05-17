@@ -314,5 +314,4 @@ def indicator_de_liquidity():
     pt = request.args.get('pt')
     date_deb = request.args.get('date_deb')
     date_fin = request.args.get('date_fin')
-    print(date_deb)
     return get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin).to_json()
