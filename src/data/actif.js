@@ -1,4 +1,4 @@
-export const actif = [
+export const actifs = [
   "Addoha",
   "AFMA",
   "Afric Indus",

@@ -1,12 +1,14 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import { actif } from "../data/actif";
+import { actifs } from "../data/actif";
 import Button from "./Button";
 import Combox from "./cmp/Combox";
 import "./styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
+import { getIndicatorDeLiquidity } from "../api/api";
+import Dataframe from "./cmp/Dataframe";
 const listButtonText = [
   "Fourchette affichee",
   "Prix moyen",
@@ -18,11 +20,14 @@ const listButtonText = [
 ];
 
 export default function IndicateurDeLiquidte() {
-  const [name, setName] = React.useState("Cat in the Hat");
+  const [price, setprice] = React.useState("0");
+  const [actif, setactif] = React.useState("");
+  const [indiquateur, setindiquateur] = React.useState("");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFin, setdateFin] = useState(new Date());
+  const [data, setdata] = useState(null);
   const handleChange = (event) => {
-    setName(event.target.value);
+    setprice(event.target.value);
   };
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
@@ -32,35 +37,61 @@ export default function IndicateurDeLiquidte() {
   };
   return (
     <div className="info">
-      <Combox name="Selectionner actif " data={actif} />
+      <Combox
+        onChange={(val) => {
+          setactif(val);
+        }}
+        name="Selectionner actif "
+        data={actifs}
+      />
       <div className="imp">
-        <Combox name="Selectionner indiquateur" data={listButtonText} />
+        <Combox
+          onChange={(val) => {
+            setindiquateur(val);
+          }}
+          name="Selectionner indiquateur"
+          data={listButtonText}
+        />
       </div>
       <TextField
         id="outlined-name"
         label="Prix de transaction"
-        value={name}
+        value={price}
+        type="number"
         onChange={handleChange}
         className="date"
       />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
-          inputFormat="MM/dd/yyyy"
+          inputFormat="yyyy/MM/dd"
           value={dateDebut}
           onChange={handleChangedateDebut}
           renderInput={(params) => <TextField className="date" {...params} />}
         />
         <MobileDatePicker
           label="Date de fin"
-          inputFormat="MM/dd/yyyy"
+          inputFormat="yyyy/MM/dd"
           value={dateFin}
           onChange={handleChangedateFin}
           renderInput={(params) => <TextField className="date" {...params} />}
         />
       </LocalizationProvider>
-      <Button name="importer" />
-      <div></div>
+      <Button
+        onClick={() => {
+          getIndicatorDeLiquidity(
+            actif,
+            indiquateur,
+            price,
+            dateDebut,
+            dateFin
+          ).then((res) => {
+            setdata(res);
+          });
+        }}
+        name="importer"
+      />
+      <Dataframe data={data} />
     </div>
   );
 }

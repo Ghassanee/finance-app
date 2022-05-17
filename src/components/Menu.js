@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./Button";
 import bmce_capital from "../assets/bmce_capital.png";
 import ifa from "../assets/ifa.png";
 import Noo from "../assets/bmce_capital.png";
 import "./styles/menu.css";
+import { getCookie } from "../data/cookies";
 export default function Menu() {
   let navigate = useNavigate();
+  useEffect(() => {
+    if (!getCookie("loggedin")) {
+      navigate("/login");
+    }
+  });
+
   return (
     <div className="menu">
       <div className="imgs">

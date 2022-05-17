@@ -8,6 +8,7 @@ export default function Combox(props) {
   const [data, setData] = useState([]);
   const handleChange = (event) => {
     setVal(event.target.value);
+    props.onChange(event.target.value);
   };
 
   useEffect(() => {

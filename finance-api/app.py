@@ -1,13 +1,16 @@
-from flask import Flask
+from flask import Flask, request
 import BVCscrap as load
+import numpy as np
+import pandas as pd
+from sqlalchemy import JSON
+from flask_jsonpify import jsonpify
+from flask_cors import CORS
 
 load.getIntraday('CIH')
 load.notation()
 
 
 class actif:
-    import BVCscrap as load
-    import pandas as pd
 
     def __init__(self, actif_name: str):
         self.actif_name = actif_name
@@ -214,67 +217,99 @@ class actif:
         return load.getIndex()['Indice rentabilite']
 
 
-def get_result(self, actif, option):
-    dd = actif('Attijariwafa')
+def get_info(actif_name, option):
+    dd = actif(actif_name)
+    cours = load.getCours(actif_name)
 
-    if option in ['resume_indexe', 'Meilleur_limit', 'Dernieres_Tansaction', 'Seance_prec']:
-        cours = bvc.getCours(actif)
-        cours.keys()
-        cours[option]
+    if option in ['Données_Seance', 'Meilleur_limit', 'Dernieres_Tansaction', 'Seance_prec']:
+        print(pd.DataFrame(cours[option]))
+        print('ssss')
         return pd.DataFrame(cours[option])
 
     elif option in ['Info_Societe', 'Actionnaires', 'Chiffres_cles', 'Ratio']:
-        indicateur = bvc.getKeyIndicators(actif)
-        indicateur.keys()
-        cours[option]
+        indicateur = load.getKeyIndicators(actif)
+
         return pd.DataFrame(cours[option])
-    elif option == Intraday:
-        data = dd.get_intraday()
-        return  dd.get_intraday()
+    # elif option == Intraday:
+    #     data = dd.get_intraday()
+    #     return dd.get_intraday()
 
 
-def get_result2(self, actif, option):
-    dd = actif('Attijariwafa')
+def get_indice( option):
 
     if option in ['Resume indice', 'Indice rentabilite', 'Indices en devises', 'Indice FTSE', ]:
-        index = bvc.getIndex()
+        index = load.getIndex()
         index.keys()
         index[option]
         return pd.DataFrame(index[option])
 
     elif option in ['Indice', 'Volume Global', 'Plus forte hausse', 'Plus forte baisse']:
-        recap = bvc.getIndexRecap()
+        recap = load.getIndexRecap()
         recap.keys()
         recap[option]
         return pd.DataFrame(recap[option])
-    elif option == poids :
-        return pd.DataFrame(bvc.getPond())
+    # elif option == poids:
+    #     return pd.DataFrame(load.getPond())
 
 
-def get_result3(self, actif, option, pt):
-    dd = actif('Attijariwafa')
+def get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin):
+    dd = actif(actif_name)
 
     if option == 'Fourchette affichee':
-        return float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])-float(load.getCours(actif)['Meilleur_limit']['Prix achat'])
+        return float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])-float(load.getCours(actif_name)['Meilleur_limit']['Prix achat'])
     elif option == 'Prix moyen':
-        return (float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/2
+        return (float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/2
     elif option == 'Fourchette relative':
-      return (float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])-float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/((float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/2)
+        return (float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])-float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/((float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/2)
     elif option == 'Fourchette effective':
-        return pt-(float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/2
+        return pt-(float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/2
     elif option == "Fourchette effective relative":
-      return (pt-(float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/2) / ((float(load.getCours(actif)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif)['Meilleur_limit']['Prix achat']))/2)
+        return (pt-(float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/2) / ((float(load.getCours(actif_name)['Meilleur_limit']['Prix de vente'])+float(load.getCours(actif_name)['Meilleur_limit']['Prix achat']))/2)
     elif option == "Corwin":
-      return (float(load.getCours(actif)['Données_Seance']['Plus haut'])-float(load.getCours(actif)['Données_Seance']['Plus bas']))/float(load.getCours(actif)['Données_Seance']['Plus haut'])
+        return (float(load.getCours(actif_name)['Données_Seance']['Plus haut'])-float(load.getCours(actif_name)['Données_Seance']['Plus bas']))/float(load.getCours(actif_name)['Données_Seance']['Plus haut'])
     elif option == "Quant_moy":
-      return (self.get_data(date_deb, date_fin)['Volume']*self.get_data(date_deb, date_fin)['Value']).mean()
+        return (dd.get_data(date_deb, date_fin)['Volume']*dd.get_data(date_deb, date_fin)['Value']).mean()
     elif option == "LIX":
-      return ((np.log((self.get_data(date_deb, date_fin)['Volume']*self.get_data(date_deb, date_fin)['Value']*self.get_data(date_deb, date_fin)['Value'])/(self.get_data(date_deb, date_fin)['High']-self.get_data(date_deb, date_fin)['Low'])))).min()
+        return ((np.log((dd.get_data(date_deb, date_fin)['Volume']*dd.get_data(date_deb, date_fin)['Value']*dd.get_data(date_deb, date_fin)['Value'])/(dd.get_data(date_deb, date_fin)['High']-dd.get_data(date_deb, date_fin)['Low'])))).min()
 
 
 app = Flask(__name__)
 
+CORS(app)
+
+cors = CORS(app, resource={
+    r"/*":{
+        "origins":"*"
+    }
+})
 
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+
+@app.route('/info')
+def info():
+    actif = request.args.get('actif')
+    option = request.args.get('option')
+    # df_list = get_info(actif, option).values.tolist()
+    # df_list_keys = get_info(actif, option).keys()
+    # JSONP_data = jsonpify(df_list)
+    # jsonKeys = jsonpify(df_list_keys)
+    return  get_info(actif, option).to_json()
+
+
+@app.route('/indice')
+def indice():
+    indice = request.args.get('indice')
+    return get_indice( indice)
+
+
+@app.route('/indicator_de_liquidity', methods=['POST', 'GET'])
+def indicator_de_liquidity():
+    actif_name = request.args.get('actif_name')
+    option = request.args.get('option')
+    pt = request.args.get('pt')
+    date_deb = request.args.get('date_deb')
+    date_fin = request.args.get('date_fin')
+    return get_indicator_de_liquidity(actif_name, option, pt, date_deb, date_fin)

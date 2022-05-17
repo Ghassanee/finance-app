@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { setCookie } from "../data/cookies";
 
 import "./styles/login.css";
 
@@ -6,12 +8,13 @@ export default function Login() {
   // React States
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  let navigate = useNavigate();
 
   // User Login info
   const database = [
     {
-      username: "user1",
-      password: "pass1",
+      username: "admin",
+      password: "admin",
     },
     {
       username: "user2",
@@ -31,6 +34,7 @@ export default function Login() {
     var { uname, pass } = document.forms[0];
 
     // Find user login info
+    // const userData = database.find((user) => user.username === uname.value);
     const userData = database.find((user) => user.username === uname.value);
 
     // Compare user info
@@ -40,6 +44,9 @@ export default function Login() {
         setErrorMessages({ name: "pass", message: errors.pass });
       } else {
         setIsSubmitted(true);
+        navigate("/");
+        document.cookie = "username=John Doe";
+        setCookie("loggedin", true);
       }
     } else {
       // Username not found
@@ -68,7 +75,7 @@ export default function Login() {
           {renderErrorMessage("pass")}
         </div>
         <div className="button-container">
-          <input type="submit" />
+          <input type="submit" value="Login" />
         </div>
       </form>
     </div>
@@ -76,7 +83,7 @@ export default function Login() {
 
   return (
     <div className="login-form">
-      <div className="title">Sign In</div>
+      <div className="title">Log in</div>
       {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
     </div>
   );

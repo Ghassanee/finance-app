@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Info from "./components/Info";
 import Indices from "./components/Indices";
 import IndicateurDeLiquidte from "./components/IndicateurDeLiquidte";
+import Login from "./components/Login";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,6 +15,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/login" element={<Login />} />
         <Route path="info" element={<Info />} />
         <Route path="indices" element={<Indices />} />
         <Route path="indicateurDeLiquidte" element={<IndicateurDeLiquidte />} />

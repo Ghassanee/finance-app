@@ -1,0 +1,18 @@
+.inline_p {
+  display: inline-block;
+  min-width: 130px;
+  font-weight: 600;
+}
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.table {
+  width: 1000px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: auto;
+  margin-top: 20px;
+}
