@@ -1,0 +1,16 @@
+.info {
+  position: absolute;
+  min-width: 300px;
+  margin: 20px;
+}
+.textSelect {
+  margin: 20px;
+  font-size: 22px;
+}
+.imp {
+  margin-top: 20px;
+}
+.date {
+  display: block !important;
+  margin: 20px 0 !important;
+}

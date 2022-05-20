@@ -21,7 +21,12 @@ export default function Menu() {
         <img src={ifa} alt="" />
         <img src={Noo} alt="" />
       </div>
-      <MyButton name="Strategie" />
+      <MyButton
+        name="Analyse"
+        onClick={() => {
+          navigate("/analyse");
+        }}
+      />
       <MyButton name="Constructeur de portefeuille" />
       <MyButton
         name="Info"
