@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { getIndice } from "../api/api";
+import { PlotHistogramme } from "../api/api";
 import { actifs } from "../data/actif";
 import Button from "./Button";
 import Combox from "./cmp/Combox";
-import Dataframe from "./cmp/Dataframe";
 import "./styles/info.css";
 
 export default function RendementHist() {
@@ -23,12 +22,12 @@ export default function RendementHist() {
       <Button
         name="Plot"
         onClick={() => {
-          getIndice(indice).then((res) => {
+          PlotHistogramme(indice).then((res) => {
             setdata(res);
           });
         }}
       />
-      <Dataframe data={data} />
+      <img src={data} alt="" />
     </div>
   );
 }

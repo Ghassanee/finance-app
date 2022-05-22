@@ -7,30 +7,15 @@ import "./styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
-import { getIndicatorDeLiquidity } from "../api/api";
-import Dataframe from "./cmp/Dataframe";
-const listButtonText = [
-  "Fourchette affichee",
-  "Prix moyen",
-  "Fourchette relative",
-  "Fourchette effective relative",
-  "Corwin",
-  "Quant_moy",
-  "LIX",
-];
+import { RisqueActif } from "../api/api";
 
 export default function Risque() {
-  const [price, setprice] = React.useState("0");
   const [actif, setactif] = React.useState("");
-  const [indiquateur, setindiquateur] = React.useState("");
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
-  const handleChange = (event) => {
-    setprice(event.target.value);
-  };
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
     setdateDebutVal(
@@ -64,31 +49,25 @@ export default function Risque() {
           inputFormat="yyyy/MM/dd"
           value={dateDebut}
           onChange={handleChangedateDebut}
-          renderInput={(params) => <TextField className="date" {...params} />}
+          renderInput={(params) => <TextField className="date1" {...params} />}
         />
         <MobileDatePicker
           label="Date de fin"
           inputFormat="yyyy/MM/dd"
           value={dateFin}
           onChange={handleChangedateFin}
-          renderInput={(params) => <TextField className="date" {...params} />}
+          renderInput={(params) => <TextField className="date1" {...params} />}
         />
       </LocalizationProvider>
       <Button
         onClick={() => {
-          getIndicatorDeLiquidity(
-            actif,
-            indiquateur,
-            price,
-            dateDebutVal,
-            dateFinVal
-          ).then((res) => {
+          RisqueActif(actif, dateDebutVal, dateFinVal).then((res) => {
             setdata(res);
           });
         }}
         name="importer"
       />
-      <Dataframe data={data} />
+      <img src={data} alt="" />
     </div>
   );
 }

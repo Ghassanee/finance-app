@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { getInfo } from "../api/api";
+import { PlotIndicateurDrawdown } from "../api/api";
 import { actifs } from "../data/actif";
 import Button from "./Button";
 import Combox from "./cmp/Combox";
-import Dataframe from "./cmp/Dataframe";
 import "./styles/info.css";
 const listButtonText = ["MAX", "MIN"];
 
 export default function Drawdown() {
   const [data, setdata] = useState(null);
   const [actif, setactif] = useState("");
-  const [option, setoption] = useState("");
+  const [tp, setTp] = useState("");
 
   return (
     <div className="info">
@@ -25,7 +24,7 @@ export default function Drawdown() {
         <Combox
           name="MIN ou MAX"
           onChange={(val) => {
-            setoption(val);
+            setTp(val);
           }}
           data={listButtonText}
         />
@@ -33,12 +32,12 @@ export default function Drawdown() {
       <Button
         name="importer"
         onClick={() => {
-          getInfo(actif, option).then((res) => {
+          PlotIndicateurDrawdown(actif, tp).then((res) => {
             setdata(res);
           });
         }}
       />
-      <Dataframe data={data} />
+      <img src={data} alt="" />
     </div>
   );
 }

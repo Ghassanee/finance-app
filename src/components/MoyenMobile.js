@@ -1,56 +1,39 @@
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import React, { useState } from "react";
-import { getIndice } from "../api/api";
+import { PlotIndicateurMA } from "../api/api";
 import { actifs } from "../data/actif";
 import Button from "./Button";
 import Combox from "./cmp/Combox";
-import Dataframe from "./cmp/Dataframe";
+import MultiCheckbox from "./cmp/MultiCheckbox";
 import "./styles/moyenMobile.css";
-
+const dataCheckbox = [20, 50, 100, 200, 500];
 export default function MoyenMobile() {
   const [data, setdata] = useState(null);
-  const [indice, setindice] = useState(null);
+  const [indices, setindices] = useState([]);
+  const [actif, setactif] = useState("");
   return (
     <div className="info">
       <div className="imp">
         <Combox
           onChange={(val) => {
-            setindice(val);
+            setactif(val);
           }}
           name="Choisir l'indice"
           data={actifs}
         />
       </div>
-      <div>
-        <FormGroup
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <p
-            style={{
-              marginRight: 50,
-            }}
-          >
-            Longueur
-          </p>
-          <FormControlLabel control={<Checkbox />} label="20" />
-          <FormControlLabel control={<Checkbox />} label="50" />
-          <FormControlLabel control={<Checkbox />} label="100" />
-          <FormControlLabel control={<Checkbox />} label="200" />
-          <FormControlLabel control={<Checkbox />} label="500" />
-        </FormGroup>
-      </div>
+      <MultiCheckbox
+        dataCheckbox={dataCheckbox}
+        onSelect={(val) => setindices(val)}
+      />
       <Button
         name="PLot"
         onClick={() => {
-          getIndice(indice).then((res) => {
+          PlotIndicateurMA(actif, indices).then((res) => {
             setdata(res);
           });
         }}
       />
-      <Dataframe data={data} />
+      <img src={data} alt="" />
     </div>
   );
 }

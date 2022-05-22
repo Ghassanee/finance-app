@@ -488,9 +488,9 @@ def plot_actif_line():
 
 @app.route('/plot_indicateur_ma', methods=['POST', 'GET'])
 def plot_indicateur_ma():
-    actif_name = request.args.get('actif_name')
     data = request.get_json()
     longueur = data.get('longueur')
+    actif_name = data.get('actif_name')
     plt1 = Plot_Indicateur_MA(actif_name, longueur)
     my_stringIObytes = io.BytesIO()
     plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -513,8 +513,8 @@ def plot_indicateur_drawdown():
 
 @app.route('/combinaison_indicateurs', methods=['POST', 'GET'])
 def combinaison_indicateurs():
-    actif_name = request.args.get('actif_name')
     data = request.get_json()
+    actif_name = data.get('actif_name')
     cible_indicateur = data.get('cible_indicateur')
     longueur_MA = data.get('longueur_MA')
     plt1 = Combinaison_Indicateurs(actif_name , cible_indicateur ,longueur_MA)
