@@ -27,7 +27,13 @@ export default function RendementHist() {
           });
         }}
       />
-      <img src={data} alt="" />
+      <img
+        style={{
+          height: 300,
+        }}
+        src={"data:image/png;base64," + data}
+        alt=""
+      />
     </div>
   );
 }

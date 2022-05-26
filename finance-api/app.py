@@ -251,3 +251,20 @@ def plot_Front_Effic():
     # my_stringIObytes.seek(0)
     # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
     return plt1
+
+
+@app.route('/plot_Front_Effic', methods=['POST', 'GET'])
+def plot_Front_Effic():
+    data = request.get_json()
+    actif_name = data.get('actif_name')
+    cours_cible = data.get('cours_cible')
+    date_debut = data.get('date_debut')
+    date_fin = data.get('date_fin')
+    plt1 = Plot_Front_Effic(
+        actif_name, cours_cible,   date_debut, date_fin)
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1

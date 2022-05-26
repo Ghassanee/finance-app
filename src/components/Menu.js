@@ -27,7 +27,12 @@ export default function Menu() {
           navigate("/analyse");
         }}
       />
-      <MyButton name="Constructeur de portefeuille" />
+      <MyButton
+        onClick={() => {
+          navigate("/ConstructeurDePortefeuille");
+        }}
+        name="Constructeur de portefeuille"
+      />
       <MyButton
         name="Info"
         onClick={() => {

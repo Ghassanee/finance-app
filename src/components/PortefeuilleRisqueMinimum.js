@@ -7,10 +7,8 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
 import { CovarianceMatrice } from "../api/api";
-import MultipleSelectChip from "./cmp/MultipleSelectChip";
 
-export default function Matrice() {
-  const [indices, setindices] = React.useState([]);
+export default function PortefeuilleRisqueMinimum() {
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
@@ -37,11 +35,6 @@ export default function Matrice() {
   };
   return (
     <div className="info">
-      <MultipleSelectChip
-        names={actifs}
-        setIndices={(val) => setindices(val)}
-      />
-
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
@@ -59,11 +52,11 @@ export default function Matrice() {
         />
       </LocalizationProvider>
       <Button
-        onClick={() => {
-          CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
-            setdata(res);
-          });
-        }}
+        // onClick={() => {
+        //   CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
+        //     setdata(res);
+        //   });
+        // }}
         name="importer"
       />
       <img

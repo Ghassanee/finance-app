@@ -67,7 +67,8 @@ export default function Risque() {
         }}
         name="importer"
       />
-      <img src={data} alt="" />
+
+      <p>{data}</p>
     </div>
   );
 }
