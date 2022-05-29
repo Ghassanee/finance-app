@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import MyButton from "./Button";
+import MyButton from "../components/Button";
 import bmce_capital from "../assets/bmce_capital.png";
 import ifa from "../assets/ifa.png";
 import Noo from "../assets/bmce_capital.png";
-import "./styles/menu.css";
+import "../components/styles/menu.css";
 import { getCookie } from "../data/cookies";
 export default function Menu() {
   let navigate = useNavigate();

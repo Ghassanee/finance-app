@@ -101,6 +101,25 @@ export async function CombinaisonIndicateurs(
   }
 }
 
+export async function Calcul_rendement_actifs(
+  actif_name,
+  tp2,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/calcul_rendement_actifs`, {
+      actif_name,
+      tp2,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function PlotHistogramme(actif_name) {
   try {
     const response = await axios.get(
@@ -118,6 +137,406 @@ export async function CovarianceMatrice(actif_name, date_debut, date_fin) {
       actif_name,
       date_debut,
       date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Risk_Minimum(
+  actif_name,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Risk_Minimum`, {
+      actif_name,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Risk_Minim_Esper(
+  actif_name,
+  cours_cible,
+  e0,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Risk_Minim_Esper`, {
+      actif_name,
+      cours_cible,
+      e0,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Return_Risque_Frontière_Effic(
+  actif_name,
+  cours_cible,
+  e0,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/return_Risque_Frontière_Effic`, {
+      actif_name,
+      cours_cible,
+      e0,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Esper_Minimum(
+  actif_name,
+  cours_cible,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Esper_Minimum`, {
+      actif_name,
+      cours_cible,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Plot_Front_Effic(
+  actif_name,
+  cours_cible,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/plot_Front_Effic`, {
+      actif_name,
+      cours_cible,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Tangeant(
+  actif_name,
+  cours_cible,
+  e0,
+  rf,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Tangeant`, {
+      actif_name,
+      cours_cible,
+      e0,
+      rf,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Minim_Risk_Limite(
+  actif_name,
+  cours_cible,
+  u,
+  limit,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Minim_Risk_Limite`, {
+      actif_name,
+      cours_cible,
+      u,
+      limit,
+      date_debut,
+      date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Minim_Risk_Limite_Esper(
+  actif_name,
+  cours_cible,
+  u,
+  limit,
+  e0,
+  date_debut,
+  date_fin
+) {
+  try {
+    const response = await axios.post(
+      `${API}/portefeuille_Minim_Risk_Limite_Esper`,
+      {
+        actif_name,
+        cours_cible,
+        u,
+        limit,
+        e0,
+        date_debut,
+        date_fin,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Constitution(
+  actif_name,
+  cours_cible,
+  window,
+  Nominal,
+  Niveau
+) {
+  try {
+    const response = await axios.post(`${API}/portefeuille_Constitution`, {
+      actif_name,
+      cours_cible,
+      window,
+      Nominal,
+      Niveau,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Strat(
+  actif_name,
+  date_debut_data,
+  date_fin_data,
+  cours_cible,
+  Nominal,
+  Niveau,
+  window
+) {
+  try {
+    const response = await axios.post(`${API}/strat`, {
+      actif_name,
+      date_debut_data,
+      date_fin_data,
+      cours_cible,
+      Nominal,
+      Niveau,
+      window,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Portefeuille_Constitution_OPCVM(
+  actif_name,
+  date_backtest,
+  periode_volume,
+  cours_cible,
+  Nominal,
+  Niveau,
+  rr
+) {
+  try {
+    const response = await axios.post(
+      `${API}/portefeuille_Constitution_OPCVM`,
+      {
+        actif_name,
+        date_backtest,
+        periode_volume,
+        cours_cible,
+        Nominal,
+        Niveau,
+        rr,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function portefeuille_Constitution_OPCVM_test(
+  actif_name,
+  date_backtest,
+  periode_volume,
+  cours_cible,
+  Nominal,
+  Niveau,
+  rr
+) {
+  try {
+    const response = await axios.post(
+      `${API}/portefeuille_Constitution_OPCVM_test`,
+      {
+        actif_name,
+        date_backtest,
+        periode_volume,
+        cours_cible,
+        Nominal,
+        Niveau,
+        rr,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function OPCVM_MAROC(
+  actif_name,
+  date_backtest,
+  periode,
+  cours_cible,
+  Nominal,
+  Niveau,
+  taux
+) {
+  try {
+    const response = await axios.post(`${API}/oPCVM_MAROC`, {
+      actif_name,
+      date_backtest,
+      periode,
+      cours_cible,
+      Nominal,
+      Niveau,
+      taux,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Backtest(
+  actif_name,
+  Nominal,
+  x,
+  date_backtest,
+  date_fin_data,
+  MSI
+) {
+  try {
+    const response = await axios.post(`${API}/backtest`, {
+      actif_name,
+      Nominal,
+      x,
+      date_backtest,
+      date_fin_data,
+      MSI,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function OPCVM_CHOIX(
+  Nominal,
+  actif_name,
+  periode,
+  date_backtest,
+  cours_cible,
+  taux
+) {
+  try {
+    const response = await axios.post(`${API}/oPCVM_CHOIX`, {
+      Nominal,
+      actif_name,
+      periode,
+      date_backtest,
+      cours_cible,
+      taux,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function Monte_Carlo(
+  Nominal,
+  actif_name,
+  periode,
+  date_backtest,
+  date_finale,
+  cours_cible,
+  taux,
+  a,
+  b,
+  MSI
+) {
+  try {
+    const response = await axios.post(`${API}/monte_Carlo`, {
+      Nominal,
+      actif_name,
+      periode,
+      date_backtest,
+      date_finale,
+      cours_cible,
+      taux,
+      a,
+      b,
+      MSI,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function OPCVM_FINALE(
+  actif_name,
+  date_backtest,
+  date_fin_data,
+  periode,
+  cours_cible,
+  taux,
+  MSI
+) {
+  try {
+    const response = await axios.post(`${API}/oPCVM_FINALE`, {
+      actif_name,
+      date_backtest,
+      date_fin_data,
+      periode,
+      cours_cible,
+      taux,
+      MSI,
     });
     return response.data;
   } catch (error) {

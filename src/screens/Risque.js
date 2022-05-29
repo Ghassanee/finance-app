@@ -1,26 +1,21 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import "./styles/info.css";
+import Button from "../components/Button";
+import Combox from "../components/cmp/Combox";
+import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
-import { CovarianceMatrice } from "../api/api";
-import MultiCheckbox from "./cmp/MultiCheckbox";
-const dataCheckbox = [
-  0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-];
+import { RisqueActif } from "../api/api";
 
-export default function PortOpti2() {
-  const [indices, setindices] = React.useState("");
-  const [indice, setindice] = React.useState([]);
+export default function Risque() {
+  const [actif, setactif] = React.useState("");
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
-
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
     setdateDebutVal(
@@ -41,13 +36,13 @@ export default function PortOpti2() {
   };
   return (
     <div className="info">
-      <TextField
-        id="outlined-name"
-        label="Esperance de rendement"
-        value={indices}
-        onChange={(val) => setindices(val)}
+      <Combox
+        onChange={(val) => {
+          setactif(val);
+        }}
+        name="Selectionner actif "
+        data={actifs}
       />
-
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
@@ -64,25 +59,16 @@ export default function PortOpti2() {
           renderInput={(params) => <TextField className="date1" {...params} />}
         />
       </LocalizationProvider>
-      <MultiCheckbox
-        dataCheckbox={dataCheckbox}
-        onSelect={(val) => setindice(val)}
-      />
       <Button
         onClick={() => {
-          CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
+          RisqueActif(actif, dateDebutVal, dateFinVal).then((res) => {
             setdata(res);
           });
         }}
         name="importer"
       />
-      <img
-        style={{
-          height: 300,
-        }}
-        src={"data:image/png;base64," + data}
-        alt=""
-      />
+
+      <p>{data}</p>
     </div>
   );
 }

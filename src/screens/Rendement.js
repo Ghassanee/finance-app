@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { PlotActifLine } from "../api/api";
-import Button from "./Button";
-import MultipleSelectChip from "./cmp/MultipleSelectChip";
-import "./styles/info.css";
+import Button from "../components/Button";
+import MultipleSelectChip from "../components/cmp/MultipleSelectChip";
+import "../components/styles/info.css";
 import { actifs } from "../data/actif";
 
 export default function Rendement() {

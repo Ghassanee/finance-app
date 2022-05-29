@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { PlotIndicateurMA } from "../api/api";
-import { actifs } from "../data/actif";
-import Button from "./Button";
-import Combox from "./cmp/Combox";
-import MultiCheckbox from "./cmp/MultiCheckbox";
-import "./styles/moyenMobile.css";
+import Button from "../components/Button";
+import MultiCheckbox from "../components/cmp/MultiCheckbox";
+import "../components/styles/moyenMobile.css";
 const dataCheckbox = ["Niveau deteremine", "Monte Carlo"];
 export default function NivCost() {
   const [data, setdata] = useState(null);

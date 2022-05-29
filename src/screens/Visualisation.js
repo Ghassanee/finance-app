@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Dataframe from "./cmp/Dataframe";
-import "./styles/info.css";
+import Dataframe from "../components/cmp/Dataframe";
+import "../components/styles/info.css";
 
-export default function FrontiereEfficiente() {
+export default function Visualisation() {
   const [data, setdata] = useState(null);
   const [indice, setindice] = useState(null);
   return (

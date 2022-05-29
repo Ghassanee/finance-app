@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import MyButton from "./Button";
-import "./styles/analyse.css";
+import MyButton from "../components/Button";
+import "../components/styles/analyse.css";
 
 export default function ContrainteDePonderation() {
   let navigate = useNavigate();

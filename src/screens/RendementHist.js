@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { PlotHistogramme } from "../api/api";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import Combox from "./cmp/Combox";
-import "./styles/info.css";
+import Button from "../components/Button";
+import Combox from "../components/cmp/Combox";
+import "../components/styles/info.css";
 
 export default function RendementHist() {
   const [data, setdata] = useState(null);

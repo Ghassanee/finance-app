@@ -1,15 +1,16 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import "./styles/info.css";
+import Button from "../components/Button";
+import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
 import { CovarianceMatrice } from "../api/api";
+import MultipleSelectChip from "../components/cmp/MultipleSelectChip";
 
-export default function PortOpti() {
-  const [indices, setindices] = React.useState("");
+export default function Matrice() {
+  const [indices, setindices] = React.useState([]);
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
@@ -36,11 +37,9 @@ export default function PortOpti() {
   };
   return (
     <div className="info">
-      <TextField
-        id="outlined-name"
-        label="Esperance de rendement"
-        value={indices}
-        onChange={(val) => setindices(val)}
+      <MultipleSelectChip
+        names={actifs}
+        setIndices={(val) => setindices(val)}
       />
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>

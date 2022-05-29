@@ -1,18 +1,15 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import { actifs } from "../data/actif";
-import Button from "./Button";
-import "./styles/info.css";
+import Button from "../components/Button";
+import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
 import { CovarianceMatrice } from "../api/api";
 
-export default function StratCoursCible() {
+export default function PortMark() {
   const [indices, setindices] = React.useState("");
-  const [indice1, setindice1] = React.useState("");
-  const [indice2, setindice2] = React.useState("");
-  const [indice3, setindice3] = React.useState("");
+  const [indice, setindice] = React.useState("");
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
@@ -42,27 +39,10 @@ export default function StratCoursCible() {
       <TextField
         id="outlined-name"
         label="Esperance de rendement"
-        value={indice1}
-        onChange={(val) => setindice1(val)}
+        value={indices}
+        onChange={(val) => setindices(val)}
       />
-      <TextField
-        id="outlined-name"
-        label="Taux sans risque"
-        value={indice2}
-        onChange={(val) => setindice2(val)}
-        style={{
-          marginTop: 30,
-        }}
-      />
-      <TextField
-        id="outlined-name"
-        label="Taux sans risque"
-        value={indice3}
-        onChange={(val) => setindice3(val)}
-        style={{
-          marginTop: 30,
-        }}
-      />
+
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
@@ -79,7 +59,15 @@ export default function StratCoursCible() {
           renderInput={(params) => <TextField className="date1" {...params} />}
         />
       </LocalizationProvider>
-
+      <TextField
+        id="outlined-name"
+        label="Taux sans risque"
+        value={indice}
+        onChange={(val) => setindice(val)}
+        style={{
+          marginTop: 30,
+        }}
+      />
       <Button
         onClick={() => {
           CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { getInfo } from "../api/api";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import Combox from "./cmp/Combox";
-import Dataframe from "./cmp/Dataframe";
-import "./styles/info.css";
+import Button from "../components/Button";
+import Combox from "../components/cmp/Combox";
+import Dataframe from "../components/cmp/Dataframe";
+import "../components/styles/info.css";
 const listButtonText = [
   "Intraday",
   "Meilleur_limit",

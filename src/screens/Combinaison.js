@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { PlotIndicateurMA } from "../api/api";
+import { CombinaisonIndicateurs } from "../api/api";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import Combox from "./cmp/Combox";
-import MultiCheckbox from "./cmp/MultiCheckbox";
-import "./styles/moyenMobile.css";
+import Button from "../components/Button";
+import Combox from "../components/cmp/Combox";
+import MultiCheckbox from "../components/cmp/MultiCheckbox";
+import "../components/styles/moyenMobile.css";
+const listButtonText = ["MAX", "MIN"];
 const dataCheckbox = [20, 50, 100, 200, 500];
-export default function MoyenMobile() {
+
+export default function Combinaison() {
   const [data, setdata] = useState(null);
   const [indices, setindices] = useState([]);
+  const [option, setoption] = useState("");
   const [actif, setactif] = useState("");
+
   return (
     <div className="info">
       <div className="imp">
@@ -21,6 +25,15 @@ export default function MoyenMobile() {
           data={actifs}
         />
       </div>
+      <div className="imp">
+        <Combox
+          name="MIN ou MAX"
+          onChange={(val) => {
+            setoption(val);
+          }}
+          data={listButtonText}
+        />
+      </div>
       <MultiCheckbox
         dataCheckbox={dataCheckbox}
         onSelect={(val) => setindices(val)}
@@ -28,7 +41,7 @@ export default function MoyenMobile() {
       <Button
         name="PLot"
         onClick={() => {
-          PlotIndicateurMA(actif, indices).then((res) => {
+          CombinaisonIndicateurs(actif, option, indices).then((res) => {
             setdata(res);
           });
         }}

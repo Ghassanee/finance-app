@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../data/cookies";
 
-import "./styles/login.css";
+import "../components/styles/login.css";
 
 export default function Login() {
   // React States

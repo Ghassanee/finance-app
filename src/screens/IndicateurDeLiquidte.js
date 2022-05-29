@@ -1,26 +1,36 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { actifs } from "../data/actif";
-import Button from "./Button";
-import "./styles/info.css";
+import Button from "../components/Button";
+import Combox from "../components/cmp/Combox";
+import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
-import { CovarianceMatrice } from "../api/api";
-import { useNavigate } from "react-router-dom";
+import { getIndicatorDeLiquidity } from "../api/api";
+import Dataframe from "../components/cmp/Dataframe";
+const listButtonText = [
+  "Fourchette affichee",
+  "Prix moyen",
+  "Fourchette relative",
+  "Fourchette effective relative",
+  "Corwin",
+  "Quant_moy",
+  "LIX",
+];
 
-export default function OPCVMActions() {
-  const [indices, setindices] = React.useState("");
-  const [indice1, setindice1] = React.useState("");
-  const [indice2, setindice2] = React.useState("");
-  const [indice3, setindice3] = React.useState("");
+export default function IndicateurDeLiquidte() {
+  const [price, setprice] = React.useState("0");
+  const [actif, setactif] = React.useState("");
+  const [indiquateur, setindiquateur] = React.useState("");
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
   const [dateDebut, setdateDebut] = useState(new Date());
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
-  let navigate = useNavigate();
-
+  const handleChange = (event) => {
+    setprice(event.target.value);
+  };
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
     setdateDebutVal(
@@ -41,64 +51,61 @@ export default function OPCVMActions() {
   };
   return (
     <div className="info">
-      <TextField
-        id="outlined-name"
-        label="Esperance de rendement"
-        value={indice1}
-        onChange={(val) => setindice1(val)}
-      />
-      <TextField
-        id="outlined-name"
-        label="Taux sans risque"
-        value={indice2}
-        onChange={(val) => setindice2(val)}
-        style={{
-          marginTop: 30,
+      <Combox
+        onChange={(val) => {
+          setactif(val);
         }}
+        name="Selectionner actif "
+        data={actifs}
       />
-
+      <div className="imp">
+        <Combox
+          onChange={(val) => {
+            setindiquateur(val);
+          }}
+          name="Selectionner indiquateur"
+          data={listButtonText}
+        />
+      </div>
+      <TextField
+        id="outlined-name"
+        label="Prix de transaction"
+        value={price}
+        type="number"
+        onChange={handleChange}
+        className="date"
+      />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
           inputFormat="yyyy/MM/dd"
           value={dateDebut}
           onChange={handleChangedateDebut}
-          renderInput={(params) => <TextField className="date1" {...params} />}
+          renderInput={(params) => <TextField className="date" {...params} />}
         />
         <MobileDatePicker
           label="Date de fin"
           inputFormat="yyyy/MM/dd"
           value={dateFin}
           onChange={handleChangedateFin}
-          renderInput={(params) => <TextField className="date1" {...params} />}
+          renderInput={(params) => <TextField className="date" {...params} />}
         />
       </LocalizationProvider>
-
       <Button
         onClick={() => {
-          // CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
-          //   setdata(res);
-          // });
-          navigate("/NivCost");
+          getIndicatorDeLiquidity(
+            actif,
+            indiquateur,
+            price,
+            dateDebutVal,
+            dateFinVal
+          ).then((res) => {
+            setdata(res);
+          });
         }}
-        name="Niveau constant"
+        name="importer"
       />
-      <Button
-        onClick={() => {
-          // CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
-          //   setdata(res);
-          // });
-          navigate("/NivVar");
-        }}
-        name="Niveau variable"
-      />
-      <img
-        style={{
-          height: 300,
-        }}
-        src={"data:image/png;base64," + data}
-        alt=""
-      />
+      <Dataframe data={data} />
     </div>
   );
 }
