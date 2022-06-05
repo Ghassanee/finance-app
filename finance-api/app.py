@@ -13,7 +13,7 @@ from numpy.linalg import inv
 import io
 import base64
 
-from functions import getCombinaisaon, getCovMat, getDrawDown, getFrontEffic, getIndicatorDeLiquidity, getIndice, getInfo, getPlotIndicateurMa, getPortMarch, getPortOpti1, getPortOpti2, getPortRiskEsp, getPortefeuilleRiskMinimum, getRendement, getRendementHist, getRiskMinim, getRisqueActif, getVisualisation
+from functions import getCombinaisaon, getCovMat, getDrawDown, getFrontEffic, getIndicatorDeLiquidity, getIndice, getInfo, getMonteCarlo, getNivFixeB, getNivFixeV, getNivVar, getNivVarB, getPlotIndicateurMa, getPortMarch, getPortOpti1, getPortOpti2, getPortRiskEsp, getPortefeuilleRiskMinimum, getRendement, getRendementHist, getRiskMinim, getRisqueActif, getVisualisation
 
 
 load.getIntraday('CIH')
@@ -58,20 +58,20 @@ def indicator_de_liquidity():
     pt = request.args.get('pt')
     date_deb = request.args.get('date_deb')
     date_fin = request.args.get('date_fin')
-    return getIndicatorDeLiquidity(actif_name, option, date_deb, date_fin ).to_json()
-
+    return getIndicatorDeLiquidity(actif_name, option, date_deb, date_fin).to_json()
 
 
 @app.route('/plot_actif_line', methods=['POST', 'GET'])
 def plot_actif_line():
-    actif_name = request.args.get('actif_name')
-    plt1 = getVisualisation(actif_name)   
-
+    data = request.get_json()
+    actif_name = data.get('actif_name')
+    plt1 = getVisualisation(actif_name)
     my_stringIObytes = io.BytesIO()
     plt1.figure.savefig(my_stringIObytes, format='jpg')
     my_stringIObytes.seek(0)
     my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
-    return my_base64_jpgData.to_json()
+    # hada dial button li f Visualisation.js
+    return my_base64_jpgData
 
 
 @app.route('/plot_indicateur_ma', methods=['POST', 'GET'])
@@ -89,8 +89,9 @@ def plot_indicateur_ma():
 
 @app.route('/plot_indicateur_drawdown', methods=['POST', 'GET'])
 def plot_indicateur_drawdown():
-    actif_name = request.args.get('actif_name')
-    tp = request.args.get('tp')
+    data = request.get_json()
+    tp = data.get('tp')
+    actif_name = data.get('actif_name')
     plt1 = getDrawDown(actif_name, tp)
 
     my_stringIObytes = io.BytesIO()
@@ -103,7 +104,7 @@ def plot_indicateur_drawdown():
 @app.route('/combinaison_indicateurs', methods=['POST', 'GET'])
 def combinaison_indicateurs():
     data = request.get_json()
-    actif_name = data.get('actif_name')
+    actif_name = data.get('actif_name')  # actif_name liste hna
     cible_indicateur = data.get('cible_indicateur')
     longueur_MA = data.get('longueur_MA')
     plt1 = getCombinaisaon(actif_name, cible_indicateur, longueur_MA)
@@ -117,11 +118,12 @@ def combinaison_indicateurs():
 @app.route('/calcul_rendement_actifs', methods=['POST', 'GET'])
 def calcul_rendement_actifs():
     data = request.get_json()
-    actif_name = data.get('actif')
+    actif_name = data.get('actif')  # actif_name liste hna
+    # dir dik TP2 wahd dropdown list fiha ya 'Cumulatif' ya 'Quotidien'
     tp2 = data.get('tp2')
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
-    plt1 = getRendement(tp2,actif_name date_debut, date_fin)
+    plt1 = getRendement(actif_name, tp2, date_debut, date_fin)
     my_stringIObytes = io.BytesIO()
     plt1.figure.savefig(my_stringIObytes, format='jpg')
     my_stringIObytes.seek(0)
@@ -159,16 +161,22 @@ def risque_actif():
 @app.route('/covariance_matrice', methods=['POST', 'GET'])
 def covariance_matrice():
     data = request.get_json()
-    actif_name = data.get('actif_name')
+    actif_name = data.get('actif_name')  # liste
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
-    plt1 = getCovMat(actif_name, date_debut, date_fin)
-    print(plt1)
-    # my_stringIObytes = io.BytesIO()
-    # plt1.figure.savefig(my_stringIObytes, format='jpg')
-    # my_stringIObytes.seek(0)
-    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
-    return plt1
+    val = data.get('val')
+    # val: wahd dropdown list smitha Plot fiha Oui ola Non
+    plt1 = getCovMat(actif_name, date_debut, date_fin,
+                     val)  # val: see comment above
+    # fl cas dial val==Non rah katrj3 dataframe
+    # fl cas dial val==Oui rah katrj3 plot
+    # capice ?
+    if val == 'Oui':
+        my_stringIObytes = io.BytesIO()
+        plt1.figure.savefig(my_stringIObytes, format='jpg')
+        my_stringIObytes.seek(0)
+        return base64.b64encode(my_stringIObytes.read())
+    return plt1.to_json()
 
 
 @app.route('/portefeuille_Risk_Minimum', methods=['POST', 'GET'])
@@ -178,7 +186,6 @@ def portefeuille_Risk_Minimum():
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
     plt1 = getPortefeuilleRiskMinimum()
-    print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
     # my_stringIObytes.seek(0)
@@ -191,6 +198,7 @@ def portefeuille_Risk_Minim_Esper():
     data = request.get_json()
     actif_name = data.get('actif_name')
     cours_cible = data.get('cours_cible')
+    # hada howa number li kaydkhl l utilisateur it's a float
     e0 = data.get('e0')
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
@@ -211,7 +219,7 @@ def return_Risque_Frontière_Effic():
     e0 = data.get('e0')
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
-    plt1 = getFrontEffic()
+    plt1 = getFrontEffic()  # hada plot
     print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -240,12 +248,9 @@ def portefeuille_Esper_Minimum():
 @app.route('/plot_Front_Effic', methods=['POST', 'GET'])
 def plot_Front_Effic():
     data = request.get_json()
-    actif_name = data.get('actif_name')
-    cours_cible = data.get('cours_cible')
-    date_debut = data.get('date_debut')
-    date_fin = data.get('date_fin')
+
     plt1 = getFrontEffic(
-        actif_name, cours_cible,   date_debut, date_fin)
+    )
     print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -282,8 +287,7 @@ def portefeuille_Minim_Risk_Limite():
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
     nm = data.get('nm')
-    plt1 = getPortRiskEsp(
-        nm)
+    plt1 = getRiskMinim(nm, u)  # nm nombre ou u vecteur fih des 0 1
     print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -302,7 +306,7 @@ def portefeuille_Minim_Risk_Limite_Esper():
     u = data.get('u')
     date_debut = data.get('date_debut')
     date_fin = data.get('date_fin')
-    plt1 = getPortOpti1(e0, u)
+    plt1 = getPortOpti1(e0, limit, u)
     print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -319,7 +323,7 @@ def portefeuille_Constitution():
     window = data.get('window')
     Nominal = data.get('Nominal')
     Niveau = data.get('Niveau')
-    plt1 = getPortOpti2(window, Nominal, Niveau )
+    plt1 = getPortOpti2(window, Nominal, Niveau)
     print(plt1)
     # my_stringIObytes = io.BytesIO()
     # plt1.figure.savefig(my_stringIObytes, format='jpg')
@@ -328,3 +332,137 @@ def portefeuille_Constitution():
     return plt1
 
 
+@app.route('/riskMinim', methods=['POST', 'GET'])
+def riskMinim():
+    data = request.get_json()
+    nb = data.get('nb')
+    vect = data.get('vect')
+    plt1 = getRiskMinim(nb, vect)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+@app.route('/portOpti2', methods=['POST', 'GET'])
+def portOpti2():
+    data = request.get_json()
+    nb1 = data.get('nb1')
+    nb2 = data.get('nb2')
+    nb3 = data.get('nb3')
+    plt1 = getPortOpti2(nb1,nb2, nb3)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+# ewa daba asidi ghadi t9add 3 interfaces jdad
+# ansift lik tsawrhom fl whatsapp
+# semmihom ghir NivFix NivVar MonteCarlo because you're a simpleton
+
+
+@app.route('/niveau_fixe_v', methods=['POST', 'GET'])
+def niveau_fixe_v():
+    # hadi dial onclick dl button Valdier f niveau_fixe
+    data = request.get_json()
+    dateback = data.get('dateback')
+    periode = data.get('periode')
+    taux = data.get('taux')
+    nominal = data.get('Nominal')
+    niveau = data.get('Niveau')
+    plt1 = getNivFixeV(dateback, periode, nominal, niveau, taux)
+
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+@app.route('/niveau_fixe_b', methods=['POST', 'GET'])
+def niveau_fixe_b():
+    # hadi dial onclick dl button Backtest f niveau_fixe
+    data = request.get_json()
+    datef = data.get('datef')  # hadi li kanakhdo mn Date Fin
+    dateback = data.get('dateback')  # hadi li kanakhdo mn Date Backtest
+    periode = data.get('periode')  # hado li bqaw des floats
+    taux = data.get('taux')
+    nominal = data.get('Nominal')
+    niveau = data.get('Niveau')
+    plt1 = getNivFixeB(datef, dateback, periode, nominal, niveau, taux)
+
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+@app.route('/niveau_var_v', methods=['POST', 'GET'])
+def niveau_var_v():
+    # hadi dial onclick dl button Valdier f niveau_var
+    data = request.get_json()
+    dateback = data.get('dateback')
+    periode = data.get('periode')
+    taux = data.get('taux')
+    nominal = data.get('Nominal')
+    # had niveau ykon liste mn dropdown multichoix (ansift lik audio hsn)
+    niveau = data.get('Niveau')
+    plt1 = getNivVar(dateback, periode, nominal, niveau, taux)
+
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+@app.route('/niveau_var_b', methods=['POST', 'GET'])
+def niveau_var_b():
+    # hadi dial onclick dl button backtest f niveau_var
+    data = request.get_json()
+    datef = data.get('datef')
+    dateback = data.get('dateback')
+    periode = data.get('periode')
+    taux = data.get('taux')
+    nominal = data.get('Nominal')
+    niveau = data.get('Niveau')
+    plt1 = getNivVarB(datef, dateback, periode, nominal, niveau, taux)
+
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
+
+
+@app.route('/montecarlo', methods=['POST', 'GET'])
+def montecarlo():
+    # hadi dial onclick dl button backtest f niveau_var
+    data = request.get_json()
+    datef = data.get('datef')
+    dateback = data.get('dateback')
+    periode = data.get('periode')
+    taux = data.get('taux')
+    nominal = data.get('Nominal')
+    niveau = data.get('Niveau')  # hna niveau ghir input wa7d: float
+    imin = data.get('imin')
+    # hado les intervalles min o max li kaydkhl l user fl interface
+    imax = data.get('imax')
+
+    plt1 = getMonteCarlo(datef, dateback, periode,
+                         nominal, niveau, taux, imin, imax)
+
+    print(plt1)
+    # my_stringIObytes = io.BytesIO()
+    # plt1.figure.savefig(my_stringIObytes, format='jpg')
+    # my_stringIObytes.seek(0)
+    # my_base64_jpgData = base64.b64encode(my_stringIObytes.read())
+    return plt1
