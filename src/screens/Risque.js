@@ -11,9 +11,19 @@ import { RisqueActif } from "../api/api";
 
 export default function Risque() {
   const [actif, setactif] = React.useState("");
-  const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
+  const [dateDebutVal, setdateDebutVal] = useState(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(new Date().getDate() + 1).padStart(2, "0")}`
+  );
   const [dateDebut, setdateDebut] = useState(new Date());
-  const [dateFinVal, setdateFinVal] = useState("2022-05-17");
+  const [dateFinVal, setdateFinVal] = useState(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(new Date().getDate() + 1).padStart(2, "0")}`
+  );
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
   const handleChangedateDebut = (newValue) => {

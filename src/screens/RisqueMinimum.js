@@ -6,7 +6,7 @@ import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
-import { CovarianceMatrice } from "../api/api";
+import { CovarianceMatrice, getRiskMinim } from "../api/api";
 import MultiCheckbox from "../components/cmp/MultiCheckbox";
 const dataCheckbox = [
   0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
@@ -70,7 +70,7 @@ export default function RisqueMinimum() {
       />
       <Button
         onClick={() => {
-          CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
+          getRiskMinim(indices, dateDebutVal, dateFinVal).then((res) => {
             setdata(res);
           });
         }}

@@ -8,14 +8,27 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
 import { CovarianceMatrice } from "../api/api";
 import MultipleSelectChip from "../components/cmp/MultipleSelectChip";
+import MultiCheckbox from "../components/cmp/MultiCheckbox";
 
 export default function Matrice() {
   const [indices, setindices] = React.useState([]);
-  const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
+  const [dateDebutVal, setdateDebutVal] = useState(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(new Date().getDate() + 1).padStart(2, "0")}`
+  );
   const [dateDebut, setdateDebut] = useState(new Date());
-  const [dateFinVal, setdateFinVal] = useState("2022-05-17");
+  const [dateFinVal, setdateFinVal] = useState(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(new Date().getDate() + 1).padStart(2, "0")}`
+  );
   const [dateFin, setdateFin] = useState(new Date());
+
   const [data, setdata] = useState(null);
+  const [val, setVal] = useState("non");
 
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
@@ -58,11 +71,19 @@ export default function Matrice() {
           renderInput={(params) => <TextField className="date1" {...params} />}
         />
       </LocalizationProvider>
+      <MultiCheckbox
+        dataCheckbox={["Plot"]}
+        onSelect={(val) => {
+          setVal(val.length > 0 ? "Oui" : "Non");
+        }}
+      />
       <Button
         onClick={() => {
-          CovarianceMatrice(indices, dateDebutVal, dateFinVal).then((res) => {
-            setdata(res);
-          });
+          CovarianceMatrice(indices, dateDebutVal, dateFinVal, val).then(
+            (res) => {
+              setdata(res);
+            }
+          );
         }}
         name="importer"
       />

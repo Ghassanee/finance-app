@@ -1,12 +1,16 @@
 import { TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { actifs } from "../data/actif";
 import Button from "../components/Button";
 import "../components/styles/info.css";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { MobileDatePicker } from "@mui/lab";
-import { CovarianceMatrice, Portefeuille_Minim_Risk_Limite } from "../api/api";
+import {
+  CovarianceMatrice,
+  Portefeuille_Minim_Risk_Limite,
+  Portefeuille_Risk_Minimum,
+} from "../api/api";
 
 export default function PortefeuilleRisqueMinimum() {
   const [dateDebutVal, setdateDebutVal] = useState("2022-05-17");
@@ -14,6 +18,11 @@ export default function PortefeuilleRisqueMinimum() {
   const [dateFinVal, setdateFinVal] = useState("2022-05-17");
   const [dateFin, setdateFin] = useState(new Date());
   const [data, setdata] = useState(null);
+  useEffect(() => {
+    Portefeuille_Risk_Minimum().then((res) => {
+      setdata(res);
+    });
+  }, []);
 
   const handleChangedateDebut = (newValue) => {
     setdateDebut(newValue);
@@ -35,7 +44,7 @@ export default function PortefeuilleRisqueMinimum() {
   };
   return (
     <div className="info">
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date de debut"
           inputFormat="yyyy/MM/dd"
@@ -53,16 +62,12 @@ export default function PortefeuilleRisqueMinimum() {
       </LocalizationProvider>
       <Button
         onClick={() => {
-          Portefeuille_Minim_Risk_Limite(
-            indices,
-            dateDebutVal,
-            dateFinVal
-          ).then((res) => {
+          Portefeuille_Risk_Minimum().then((res) => {
             setdata(res);
           });
         }}
         name="importer"
-      />
+      /> */}
       <img
         style={{
           height: 300,

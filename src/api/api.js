@@ -39,9 +39,10 @@ export async function getIndicatorDeLiquidity(
 
 export async function PlotIndicateurDrawdown(actif_name, tp) {
   try {
-    const response = await axios.get(
-      `${API}/plot_indicateur_drawdown?actif_name=${actif_name}&tp=${tp}`
-    );
+    const response = await axios.post(`${API}/plot_indicateur_drawdown`, {
+      actif_name,
+      tp,
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -65,6 +66,18 @@ export async function RisqueActif(actif_name, date_debut, date_fin) {
       actif_name,
       date_debut,
       date_fin,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getRiskMinim(nb, vect) {
+  try {
+    const response = await axios.post(`${API}/riskMinim`, {
+      nb,
+      vect,
     });
     return response.data;
   } catch (error) {
@@ -131,12 +144,13 @@ export async function PlotHistogramme(actif_name) {
   }
 }
 
-export async function CovarianceMatrice(actif_name, date_debut, date_fin) {
+export async function CovarianceMatrice(actif_name, date_debut, date_fin, val) {
   try {
     const response = await axios.post(`${API}/covariance_matrice`, {
       actif_name,
       date_debut,
       date_fin,
+      val,
     });
     return response.data;
   } catch (error) {
@@ -144,17 +158,9 @@ export async function CovarianceMatrice(actif_name, date_debut, date_fin) {
   }
 }
 
-export async function Portefeuille_Risk_Minimum(
-  actif_name,
-  date_debut,
-  date_fin
-) {
+export async function Portefeuille_Risk_Minimum() {
   try {
-    const response = await axios.post(`${API}/portefeuille_Risk_Minimum`, {
-      actif_name,
-      date_debut,
-      date_fin,
-    });
+    const response = await axios.post(`${API}/portefeuille_Risk_Minimum`, {});
     return response.data;
   } catch (error) {
     console.log(error);
@@ -222,18 +228,21 @@ export async function Portefeuille_Esper_Minimum(
   }
 }
 
-export async function Plot_Front_Effic(
-  actif_name,
-  cours_cible,
-  date_debut,
-  date_fin
-) {
+export async function Plot_Front_Effic() {
   try {
-    const response = await axios.post(`${API}/plot_Front_Effic`, {
-      actif_name,
-      cours_cible,
-      date_debut,
-      date_fin,
+    const response = await axios.post(`${API}/plot_Front_Effic`, {});
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getPortOpti2(nb1, nb2, nb3) {
+  try {
+    const response = await axios.post(`${API}/portOpti2`, {
+      nb1,
+      nb2,
+      nb3,
     });
     return response.data;
   } catch (error) {

@@ -26,11 +26,12 @@ import FrontiereEfficiente from "./screens/FrontiereEfficiente";
 import ContrainteDePonderation from "./screens/ContrainteDePonderation";
 import RisqueMinimum from "./screens/RisqueMinimum";
 import PortOpti2 from "./screens/PortOpti2";
+import PortOpti3 from "./screens/PortOpti3";
 import ContrainteDeLiquidite from "./screens/ContrainteDeLiquidite";
 import OPCVMActions from "./screens/OPCVMActions";
 import NivCost from "./screens/NivCost";
 import NivVar from "./screens/NivVar";
-
+import StratCoursCible from "./screens/StratCoursCible";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
@@ -71,10 +72,12 @@ root.render(
           element={<ContrainteDeLiquidite />}
         />
         <Route path="OPCVM" element={<OPCVMActions />} />
+        <Route path="StratCoursCible" element={<StratCoursCible />} />
         <Route path="NivCost" element={<NivCost />} />
         <Route path="NivVar" element={<NivVar />} />
         <Route path="RisqueMinimum" element={<RisqueMinimum />} />
         <Route path="PortOpti2" element={<PortOpti2 />} />
+        <Route path="PortOpti3" element={<PortOpti3 />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
