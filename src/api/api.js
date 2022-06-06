@@ -1,5 +1,6 @@
 import axios from "axios";
-const API = "http://127.0.0.1:5000";
+// const API = "http://127.0.0.1:5000";
+const API = "https://finanance-api.herokuapp.com";
 export async function getInfo(actif, option) {
   try {
     const response = await axios.get(
