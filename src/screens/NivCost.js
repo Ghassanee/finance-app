@@ -7,7 +7,7 @@ const dataCheckbox = ["Niveau deteremine", "Monte Carlo"];
 export default function NivCost() {
   const [data, setdata] = useState(null);
   const [indices, setindices] = useState([]);
-  const [actif, setactif] = useState("");
+  const [actif] = useState("");
   return (
     <div className="info">
       <MultiCheckbox

@@ -5,7 +5,7 @@ import "../components/styles/info.css";
 
 export default function FrontiereEfficiente() {
   const [data, setdata] = useState(null);
-  const [indice, setindice] = useState(null);
+  // const [indice, setindice] = useState(null);
   useEffect(() => {
     Plot_Front_Effic().then((res) => {
       setdata(res);

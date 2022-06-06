@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { PlotActifLine } from "../api/api";
 import Button from "../components/Button";
